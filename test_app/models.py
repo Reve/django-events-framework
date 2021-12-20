@@ -1,10 +1,10 @@
 from django.db import models
 
 from events_framework.models import EventModel
-from .events import TestObjectEvents
+from .events import PersonEvents
 
 
-class TestObject(models.Model):
+class Person(models.Model):
     name = models.CharField(max_length=64)
 
     def save(self) -> None:
@@ -14,14 +14,14 @@ class TestObject(models.Model):
         return super().save()
 
 
-class TestEvent(EventModel):
-    test_object = models.ForeignKey(
-        TestObject,
+class PersonEvent(EventModel):
+    person = models.ForeignKey(
+        Person,
         on_delete=models.CASCADE,
         related_name="events",
     )
 
     type = models.CharField(
         max_length=128,
-        choices=TestObjectEvents.as_choices(),
+        choices=PersonEvents.as_choices(),
     )

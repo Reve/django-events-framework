@@ -1,7 +1,7 @@
 from events_framework.utils import AbstractEvents
 
 
-class TestObjectEvents(AbstractEvents):
+class PersonEvents(AbstractEvents):
     CREATED = "created"
     UPDATED = "updated"
     DELETED = "deleted"
