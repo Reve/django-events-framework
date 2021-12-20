@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+    dev-server:
+        build: .
+        command: /bin/sh
+        stdin_open: true
+        tty: true
+        volumes:
+            - .:/home/src
+            - ~.ssh:/root/.ssh:ro
