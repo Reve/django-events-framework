@@ -1,3 +1,6 @@
 .pytest_cache
 .vscode
 db.sqlite3
+dist/
+build/
+django_events_framework.egg-info/
