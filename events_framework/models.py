@@ -1,7 +1,12 @@
+from django import VERSION
 from django.db import models
-from django.db.models.fields.json import JSONField
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+if VERSION[0] == 2:
+    from jsonfield import JSONField
+else:
+    from django.db.models.fields.json import JSONField
 
 
 class EventModel(models.Model):

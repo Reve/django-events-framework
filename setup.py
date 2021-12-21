@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django-events-framework",
-    version="0.0.5",
+    version="0.0.6",
     author="Alexandru Gheorghita",
     author_email="gheorghitacristian@mac.com",
     description="An events framework for logging and processing Django models events.",
@@ -16,7 +16,7 @@ setuptools.setup(
     url="https://github.com/Reve/django-events-framework",
     packages=setuptools.find_packages(exclude=("test_app*",)),
     include_package_data=True,
-    install_requires=["django>=3.2.0"],
+    install_requires=["django>=2.2", "django-jsonfield"],
     python_requires=">=3.6",
     classifiers=[
         "License :: OSI Approved :: MIT License",
