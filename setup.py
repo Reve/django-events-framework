@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django-events-framework",
-    version="0.0.4",
+    version="0.0.5",
     author="Alexandru Gheorghita",
     author_email="gheorghitacristian@mac.com",
     description="An events framework for logging and processing Django models events.",
@@ -17,13 +17,16 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=("test_app*",)),
     include_package_data=True,
     install_requires=["django>=3.2.0"],
-    python_requires=">=3.7",
+    python_requires=">=3.6",
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
