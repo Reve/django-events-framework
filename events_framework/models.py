@@ -27,4 +27,4 @@ class EventModel(models.Model):
         ordering = ("date",)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(type={self.type!r}, user={self.user!r})"
+        return f"{self.__class__.__name__}(type={self.type!r})"

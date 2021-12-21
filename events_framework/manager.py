@@ -12,6 +12,7 @@ class EventsManager:
         if event_model in self._events_registry:
             logger.info("event handler allready in registry")
             return
+
         self._events_registry[event_model] = {
             "type": event_type,
             "handler": handler,
@@ -23,20 +24,17 @@ class EventsManager:
                 type=props["type"],
                 processed=False,
             )
-            print("here?")
 
             for event in events_to_process:
                 with transaction.atomic():
                     for e in events_to_process.filter(pk=event.pk).select_for_update(
                         skip_locked=True
                     ):
-                        print(e)
                         try:
                             props["handler"](e)
                             e.processed = True
                             e.save()
                         except Exception as e:
-                            print(e)
                             logger.error(str(e))
 
 
