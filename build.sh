@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 python -m build --sdist --wheel --outdir dist/ .
 twine check dist/*
