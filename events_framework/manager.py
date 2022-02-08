@@ -9,19 +9,21 @@ class EventsManager:
         self._events_registry = {}
 
     def register(self, event_model, event_type, handler):
-        if event_model in self._events_registry:
+        if handler in self._events_registry:
             logger.info("event handler allready in registry")
             return
 
-        self._events_registry[event_model] = {
+        self._events_registry[handler] = {
             "type": event_type,
-            "handler": handler,
+            "event_model": event_model,
         }
 
     def process(self):
-        for event_model, props in self._events_registry.items():
+        for handler, props in self._events_registry.items():
+            event_model = props["event_model"]
+            event_type = props["type"]
             events_to_process = event_model.objects.filter(
-                type=props["type"],
+                type=event_type,
                 processed=False,
             )
 
@@ -31,7 +33,7 @@ class EventsManager:
                         skip_locked=True
                     ):
                         try:
-                            props["handler"](e)
+                            handler(e)
                             e.processed = True
                             e.save()
                         except Exception as e:

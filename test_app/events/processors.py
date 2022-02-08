@@ -1,9 +1,10 @@
 from events_framework.decorators import register
 
 from . import PersonEvents
-from ..models import Person
+from ..models import PersonEvent
 
 
-@register(Person, PersonEvents.CREATED)
+@register(PersonEvent, PersonEvents.CREATED)
 def handle_object_created(e):
-    print(e)
+    e.person.activation_link_sent = True
+    e.person.save()

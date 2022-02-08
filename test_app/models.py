@@ -6,12 +6,13 @@ from .events import PersonEvents
 
 class Person(models.Model):
     name = models.CharField(max_length=64)
+    activation_link_sent = models.BooleanField(default=False)
 
     def save(self) -> None:
         from .events import generators as events
 
+        super().save()
         events.created_event(self)
-        return super().save()
 
 
 class PersonEvent(EventModel):

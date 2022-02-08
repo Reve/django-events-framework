@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django-events-framework",
-    version="0.0.6",
+    version="0.0.7",
     author="Alexandru Gheorghita",
     author_email="gheorghitacristian@mac.com",
     description="An events framework for logging and processing Django models events.",
