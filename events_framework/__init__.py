@@ -1,5 +1,6 @@
 from importlib import import_module
 
+import django
 from django.conf import settings
 
 
@@ -16,3 +17,8 @@ def autodiscover():
             import_module("%s.%s" % (app, "events.processors"))
         except Exception as e:
             print(e)
+
+
+# backwards compatibility with Django 2.*
+if django.VERSION < (3, 2):
+    default_app_config = "events_framework.apps.EventsManagerConfig"
