@@ -32,7 +32,7 @@ class EventModel(models.Model):
         default=False,
     )
 
-    error_message = models.TextField(_("Error message"))
+    error_message = models.TextField(_("Error message"), null=True, blank=True, default=None)
 
     class Meta:
         abstract = True
