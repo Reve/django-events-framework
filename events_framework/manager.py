@@ -36,8 +36,12 @@ class EventsManager:
                             handler(e)
                             e.processed = True
                             e.save()
-                        except Exception as e:
-                            logger.error(str(e))
+                        except Exception as ex:
+                            logger.error(str(ex))
+                            e.error = True
+                            e.error_message = str(ex)
+                            e.processed = True
+                            e.save()
 
 
 manager = EventsManager()

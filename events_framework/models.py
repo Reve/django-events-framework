@@ -27,9 +27,17 @@ class EventModel(models.Model):
         default=False,
     )
 
+    error = models.BooleanField(
+        _("Has error?"),
+        default=False,
+    )
+
+    error_message = models.TextField(_("Error message"))
+
     class Meta:
         abstract = True
         ordering = ("date",)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(type={self.type!r})"
+
