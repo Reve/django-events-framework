@@ -1,6 +1,7 @@
 import logging
 from django.db import transaction
 
+logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s')
 logger = logging.getLogger(__name__)
 
 
@@ -37,7 +38,7 @@ class EventsManager:
                             e.processed = True
                             e.save()
                         except Exception as ex:
-                            logger.error(str(ex))
+                            logger.warning(str(ex))
                             e.error = True
                             e.error_message = str(ex)
                             e.processed = True

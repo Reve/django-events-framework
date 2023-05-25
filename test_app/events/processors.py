@@ -8,3 +8,9 @@ from ..models import PersonEvent
 def handle_object_created(e):
     e.person.activation_link_sent = True
     e.person.save()
+
+
+@register(PersonEvent, PersonEvents.FAILED)
+def handle_event_failed(e):
+    raise Exception("This event failed intentionally")
+

@@ -7,3 +7,11 @@ def created_event(person):
         person=person,
         type=PersonEvents.CREATED,
     )
+
+
+def failed_event(person):
+    return PersonEvent.objects.create(
+        person=person,
+        type=PersonEvents.FAILED,
+    )
+

@@ -14,6 +14,11 @@ class Person(models.Model):
         super().save()
         events.created_event(self)
 
+    def fail(self) -> None:
+        from .events import generators as events
+
+        events.failed_event(self)
+
 
 class PersonEvent(EventModel):
     person = models.ForeignKey(
