@@ -3,4 +3,4 @@ class AbstractEvents:
 
     @classmethod
     def as_choices(cls):
-        return [(type_name.upper(), type_name) for type_name, _ in cls.CHOICES]
+        return [(type_name, label) for type_name, label in cls.CHOICES]

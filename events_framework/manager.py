@@ -1,28 +1,26 @@
 import logging
 from django.db import transaction
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s')
 logger = logging.getLogger(__name__)
 
 
 class EventsManager:
     def __init__(self):
+        # (event_model, event_type) -> [handlers]
         self._events_registry = {}
 
     def register(self, event_model, event_type, handler):
-        if handler in self._events_registry:
-            logger.info("event handler allready in registry")
+        key = (event_model, event_type)
+        handlers = self._events_registry.setdefault(key, [])
+
+        if handler in handlers:
+            logger.info("event handler already in registry for %s:%s", event_model.__name__, event_type)
             return
 
-        self._events_registry[handler] = {
-            "type": event_type,
-            "event_model": event_model,
-        }
+        handlers.append(handler)
 
     def process(self):
-        for handler, props in self._events_registry.items():
-            event_model = props["event_model"]
-            event_type = props["type"]
+        for (event_model, event_type), handlers in self._events_registry.items():
             events_to_process = event_model.objects.filter(
                 type=event_type,
                 processed=False,
@@ -34,11 +32,13 @@ class EventsManager:
                         skip_locked=True
                     ):
                         try:
-                            handler(e)
+                            for handler in handlers:
+                                handler(e)
+
                             e.processed = True
                             e.save()
                         except Exception as ex:
-                            logger.warning(str(ex))
+                            logger.warning("Error processing %s:%s -> %s", event_model.__name__, event_type, ex)
                             e.error = True
                             e.error_message = str(ex)
                             e.processed = True

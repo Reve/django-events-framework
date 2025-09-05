@@ -1,7 +1,10 @@
+import logging
 from importlib import import_module
 
 import django
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 def autodiscover():
@@ -13,10 +16,14 @@ def autodiscover():
 
     for app in settings.EVENT_APPS:
         # load processors
+        module_path = f"{app}.events.processors"
         try:
-            import_module("%s.%s" % (app, "events.processors"))
-        except Exception as e:
-            print(e)
+            import_module(module_path)
+        except ImportError:
+            # App may not define processors; that's fine
+            continue
+        except Exception:
+            logger.exception("Error importing %s", module_path)
 
 
 # backwards compatibility with Django 2.*

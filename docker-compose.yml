@@ -8,4 +8,4 @@ services:
         tty: true
         volumes:
             - .:/home/src
-            - ~.ssh:/root/.ssh:ro
+            - ~/.ssh:/root/.ssh:ro

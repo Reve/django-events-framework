@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        django: ["2.2", "3.2", "4.2"]
+        exclude:
+          - python-version: "3.9"
+            django: "2.2"
+          - python-version: "3.10"
+            django: "2.2"
+          - python-version: "3.11"
+            django: "2.2"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Install pytest stack and the targeted Django version
+          pip install pytest pytest-django "django==${{ matrix.django }}"
+          # jsonfield is required for Django 2.2
+          if [ "${{ matrix.django }}" = "2.2" ]; then pip install jsonfield>=3.1.0; fi
+          # Install the package itself
+          pip install -e .
+
+      - name: Run tests
+        run: |
+          pytest -q
+
