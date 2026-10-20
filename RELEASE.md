@@ -3,21 +3,25 @@ Release Guide
 - Bump version:
   - Edit `setup.cfg:version` and commit.
 
-- Tag the release:
-  - `git tag vX.Y.Z`
+- Push the release commit and wait for CI to pass:
+  - `git push origin main`
+
+- Configure Trusted Publishing (one-time):
+  - Create the GitHub Actions environment `pypi` in `Reve/django-events-framework`.
+  - In PyPI's `django-events-framework` project, open Publishing and add a GitHub publisher:
+    - Owner: `Reve`
+    - Repository: `django-events-framework`
+    - Workflow: `publish.yml`
+    - Environment: `pypi`
+
+- Tag the verified release commit:
+  - `git tag -a vX.Y.Z -m "Release X.Y.Z"`
   - `git push origin vX.Y.Z`
 
-- Configure GitHub secrets (one-time):
-  - `TEST_PYPI_API_TOKEN`: TestPyPI token (use `__token__` as username)
-  - Optionally `PYPI_API_TOKEN` for real PyPI
-
 - What happens:
-  - CI runs tests on matrix (`.github/workflows/ci.yml`).
-  - Publish workflow (`.github/workflows/publish.yml`) builds sdist/wheel and publishes to TestPyPI on tags matching `v*`.
+  - The publish workflow builds and validates the sdist and wheel.
+  - A separate publishing job downloads those artifacts and authenticates to PyPI through GitHub OIDC in the `pypi` environment.
 
-- Verify on TestPyPI:
-  - `pip install -i https://test.pypi.org/simple/ django-events-framework==X.Y.Z`
-
-- Promote to PyPI (optional):
-  - Uncomment the PyPI step in `.github/workflows/publish.yml` and add `PYPI_API_TOKEN` secret, then tag a new version.
+- Verify on PyPI:
+  - `pip install django-events-framework==X.Y.Z`
 

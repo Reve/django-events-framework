@@ -2,7 +2,9 @@ Changelog
 
 This project adheres to Keep a Changelog principles and aims to follow SemVer once stable.
 
-## [Unreleased]
+## [0.0.15]
+
+Date: 2026-10-20
 
 Added
 - `RetryEvent` leaves an event pending for the next processing run without adding model fields or migrations. Ordinary exceptions retain terminal error handling.
