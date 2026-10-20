@@ -1,5 +1,8 @@
 import logging
+
 from django.db import transaction
+
+from .exceptions import RetryEvent
 
 logger = logging.getLogger(__name__)
 
@@ -32,16 +35,19 @@ class EventsManager:
                         skip_locked=True
                     ):
                         try:
-                            for handler in handlers:
-                                handler(e)
-
-                            e.processed = True
-                            e.save()
+                            with transaction.atomic():
+                                for handler in handlers:
+                                    handler(e)
                         except Exception as ex:
                             logger.warning("Error processing %s:%s -> %s", event_model.__name__, event_type, ex)
                             e.error = True
                             e.error_message = str(ex)
+                            e.processed = not isinstance(ex, RetryEvent)
+                            e.save(update_fields=["processed", "error", "error_message"])
+                        else:
                             e.processed = True
+                            e.error = False
+                            e.error_message = None
                             e.save()
 
 

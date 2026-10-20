@@ -2,6 +2,15 @@ Changelog
 
 This project adheres to Keep a Changelog principles and aims to follow SemVer once stable.
 
+## [Unreleased]
+
+Added
+- `RetryEvent` leaves an event pending for the next processing run without adding model fields or migrations. Ordinary exceptions retain terminal error handling.
+
+Fixed
+- Roll back handler database changes before recording a failure, including database errors that would otherwise leave the transaction unusable.
+- Clear error fields after a successful retry.
+
 ## [0.0.14]
 
 Date: 2025-09-05
